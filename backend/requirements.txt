@@ -1,7 +1,36 @@
-fastapi==0.115.0
-uvicorn[standard]==0.30.6
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
 python-multipart==0.0.9
-pydantic==2.8.2
-openai==1.47.0
+pydantic==2.7.1
+anthropic==0.26.0
 python-dotenv==1.0.1
-httpx==0.27.2
+httpx==0.27.0
+```
+
+> Notice: removed `openai` (not used), kept `anthropic`, pinned versions that have pre-built wheels for Python 3.11.
+
+---
+
+## Push & Redeploy
+
+After committing both files on GitHub:
+
+1. Go to **Render Dashboard**
+2. Click your service → **"Manual Deploy"** → **"Deploy latest commit"**
+3. Watch the logs — should now complete successfully
+
+---
+
+## Why This Happened
+
+| Problem | Cause |
+|---------|-------|
+| Python 3.14 | Too bleeding-edge — most packages don't have wheels for it yet |
+| `pydantic-core` compile fail | Needs Rust/Cargo to build from source, Render's filesystem is read-only |
+| Fix | Pin to Python 3.11 which has pre-built wheels for all dependencies |
+
+---
+
+After this fix your build should show:
+```
+==> Build successful 🎉
